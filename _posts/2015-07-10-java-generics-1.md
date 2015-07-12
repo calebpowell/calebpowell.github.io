@@ -74,7 +74,7 @@ public static void doSomething(Object[] objs) {};
 doSomething(new String[]{"a", "b"});
 ```
 
-And therein lies a problem. The fact that arrays are covariant means that the compiler cannot guarantee type safety when you _put_ an element into an array. For example, the following code will compile but result in an ArrayStoreException at runtime:
+The fact that arrays are covariant means that the compiler cannot guarantee type safety when you _put_ an element into an array. For example, the following code will compile but result in an ArrayStoreException at runtime:
 
 ```java
 Object[] objs = new String[]{"a", "b"};
@@ -84,7 +84,7 @@ Object a = objs[0];//safe to 'get' an object from the array
 objs[1] = new Integer(1);//this compiles, but results in the ArrayStoreException
 ```
 
-So this is a problem (at least, if you are a statically typed language that really cares about type safety).
+Heterogeneous arrays are no big deal if you are using a weakly typed language such as JavaScript. They can be a serious problem when youR language is trying to guarantee type safety.
 
 Collections weren't typed prior to Java 1.5, but 
 
