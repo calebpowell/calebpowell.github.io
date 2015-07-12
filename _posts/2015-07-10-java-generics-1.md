@@ -38,7 +38,6 @@ class Child extends Parent {
 __Contravariance:__ Converting from narrower to wider. Contravariance permits the use of a wider type where a narrower type is expected. The following are all examples of contravariance:
 
 ```java
-
 //contravariant assignment
 int i = 0;
 long n = i;
@@ -61,4 +60,31 @@ String s = new Integer(1);//won't compile
 ```
 
 If you have been programming in Java, most of the above should be familiar to you.
+
+### Arrays and Collections (before Generics)
+
+Before looking at Generics, let's consider complex types like arrays and collections with respect to variance. Java arrays are covariant:
+
+```java
+//assignment
+Object[] objs = new String[]{"a", "b"};
+
+//method invocation
+public static void doSomething(Object[] objs) {};
+doSomething(new String[]{"a", "b"});
+```
+
+And therein lies a problem. The fact that arrays are covariant means that the compiler cannot guarantee type safety when you _put_ an element into an array. For example, the following code will compile but result in an ArrayStoreException at runtime:
+
+```java
+Object[] objs = new String[]{"a", "b"};
+
+Object a = objs[0];//safe to 'get' an object from the array
+
+objs[1] = new Integer(1);//this compiles, but results in the ArrayStoreException
+```
+
+So this is a problem (at least, if you are a statically typed language that really cares about type safety).
+
+Collections weren't typed prior to Java 1.5, but 
 
