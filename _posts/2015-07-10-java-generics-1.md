@@ -104,5 +104,16 @@ ostensiblyStrings.add(new Integer(1));
 String s = (String) ostensiblyStrings.get(0);//ClassCastException at runtime!
 ```
 
-So, this is a problem.
+So, this was a problem (and generics address it). Also, keep in mind that Collections are just reference types and therefore covariant:
+
+
+```java
+//covariant assignment
+Collection list = new ArrayList();
+
+//covariant method invocation
+public static void doSomething(Collection objs) {};
+doSomething(list);
+```
+
 
