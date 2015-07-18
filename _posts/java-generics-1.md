@@ -63,7 +63,7 @@ If you have been programming in Java, most of the examples above should be famil
 
 ### Arrays and Collections (before Generics)
 
-Before looking at Generics, let's consider complex types like arrays and collections with respect to variance. Java arrays are covariant:
+Before looking at Generics, let's consider complex types like arrays and Collections with respect to variance. Java arrays are covariant:
 
 ```java
 //assignment
@@ -85,7 +85,7 @@ objs[1] = new Integer(1);//not so safe to put. this compiles, but results in the
 
 Yeah, not so good when your language is trying to guarantee type safety.
 
-What about collections? Unlike arrays, pre-generic Java collections did not allow you to specify the component type (that is where generics come in). As a result, you had to perform a cast whenever you retrieved an item from a collection:
+What about Collections? Unlike arrays, pre-generic Java Collections did not allow you to specify the component type (that is where generics come in). As a result, you had to perform a cast whenever you retrieved an item from a collection:
 
 ```java
 List strings = new ArrayList();
@@ -114,4 +114,80 @@ public static void doSomething(Collection objs) {};
 doSomething(list);
 ```
 
+### Enter Generics
 
+Generics allow us to abstract over reference types and enhance type-safety. They are implemented using a technique called erasure, whereby the compiler erases the type parameters (e.g. <String>) and inserts the casts that programmers used to add manually. It is important to understand this; the generic types are not compiled into the bytecode but are erased by the compiler (after it uses them to ensure that your code is type safe). The casts created by the compiler are guaranteed not to fail at runtime provided there are no raw types. Your compiler or IDE will provide warnings when it encounters raw types.  Fix them.
+
+Before going any further, let's consider a simple class hierarchy that we can use to illustrate our types:
+
+```java
+public class Plant{};
+public class Fruit extends Plant{};
+public class Apple extends Fruit{};
+public class Orange extends Fruit{};
+```
+
+As mentioned above, reference types are covariant so you can substitute a __subtype__ where a __supertype__ is expected:
+
+```java
+Fruit fruit = new Apple();
+```
+
+Raw Collections (Collections whose component type isn't specified) are also covariant:
+
+```java
+Collection col = new ArrayList();
+```
+
+However, Collections specified with different type parameters are invariant! So the following code will not compile:
+
+```java
+Collection<Fruit> col = new ArrayList<Apple>();//won't compile!
+```
+
+This code can only be made to compile by removing the invariance on the type paramaters on either the left or right side:
+
+```java
+Collection<Apple> col = new ArrayList<Apple>();//compiles!
+```
+
+In other words:
+
+An Apple is an Apple:
+
+```java
+Apple apple = new Apple();
+```
+
+An Apple is a Fruit:
+
+```java
+Fruit fruit = new Apple();
+```
+
+A List of Apple is a Collection of Apple:
+
+```java
+Collection<Apple> col = new ArrayList<Apple>();
+```
+
+But, a List of Apple is not a List of Fruit! 
+
+```java
+ArrayLit<Fruit> col = new ArrayList<Apple>();//won't compile
+```
+
+The invariance of generic types can often feel counter-intuitive. The fact that Generic types are invariant means that some types of assignment are impossible. Consider the following utility method to print the components of a collection:
+
+```java
+public static void printElements(Collection<Object> col) {
+    for (Object obj : col) {
+        System.out.println(obj);
+    }
+}
+
+Collection<Apple> apples = new ArrayList<Apple>();
+printElements(apples);//won't compile!!
+```
+
+In the next post, we will take a look at how wild cards can help provide some covariant and contravariant assignments when using generic types.
