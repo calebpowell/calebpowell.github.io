@@ -85,6 +85,35 @@ public void makeSmoothie(Fruit[] fruit) {
 }
 ```
 
-It is safe to get a Fruit reference from the fruit array, but it isn't safe to put an instance of a Fruit into the array. The people designing the Java language did not make this same mistake with typed collections. 
+It is safe to get a Fruit reference from the fruit array, but it isn't safe to put an instance of a Fruit into the array (because it is actually an array of Apples). The people designing the Java language (and Generics) did not permit this same mistake with typed collections. So, for a collection reference defined with an `? extends Fruit` wildcard type, the compiler prevents you from adding an element:
+
+```java
+List<Apple> apples = new ArrayList<Apple>();
+apples.add(new Apple());
+makeSmoothie(apples);
+
+public void makeSmoothie(List<? extends Fruit> fruit) {
+    Fruit aFruit = fruit.get(0);//type-safe
+    fruit.add(new Orange());//compile-time error
+}
+```
+
+The compiler cannot guarantee what will be passed as a parameter at __runtime__, so it prevents the call to `fruit.add()` inside the `makeSmoothie` method. It is important to point out that there is nothing special about the Collection class; you will see the same compile time checks with your own generic classes if using the `extends` wildcard:
+
+```java
+public class MyContainer<E> {
+        
+    public void add(E el){};
+        
+    public E get(int index) {
+        return null;
+    }
+}
+
+private void doSomething(MyContainer<? extends Object> objs){
+        Object obj1 = objs.get(0);
+        objs.add(new String("abc"));//won't compile
+}
+```
 
 
