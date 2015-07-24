@@ -137,3 +137,9 @@ Object obj = fruit.get(0);
 
 The compiler will allow this because it can be sure that __every__ reference type is an Object. Just don't forget, the reference could also be null (but that's nothing new).
 
+All of the above can be summed up via the __Get and Put Principle__:
+
+>Use an extends wildcard when you only get values out of a structure, user a super wildcard when you only put values into a structure, 
+>and don't use a wildcard when you both get and put. (Naftalin & Wadler, [Java Generics and Collections](http://oreilly.com/catalog/9780596527754), pg 19).
+
+Even if nothing else in this post makes sense to you, remember the __Get and Put Principle__! It is __inviolable__.... even if it doesn't seem... you know... intuitive.
