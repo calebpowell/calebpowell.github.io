@@ -43,9 +43,9 @@ printElements(oranges);//compiles!!
 
 By changing the col parameter from the type `Collection<Object>` to the type `Collection<?>`, we have introduced covariance and made it possible to invoke this utility method with any generic type parameter. 
 
-### Wildcards with __extends__
+### Wildcards with _extends_
 
-In the example above, the `?` wildcard character is actually a shorthand for `? extends Object`. Object is the 'upper bound' of the type.  You can declare your own wildcard type parameters too. For example, the wildcard `Collection<? extends Fruit>` declares __Fruit__ as the __upper__ bound of the type. This permits covariant assignments:
+In the example above, the `?` wildcard character is actually a shorthand for `? extends Object`. Object is the 'upper bound' of the type.  You can declare your own wildcard type parameters too. For example, the wildcard `Collection<? extends Fruit>` declares _Fruit_ as the _upper_ bound of the type. This permits covariant assignments:
 
 ```java
 Collection<? extends Fruit> fruit1 = new ArrayList<Apple>();//compiles
@@ -55,9 +55,9 @@ Collection<? extends Fruit> fruit3 = new ArrayList<Orange>();//compiles
 Collection<? extends Fruit> fruit4 = new ArrayList<Plant>();//won't compile!!
 ```
 
-### Wildcards with __super__
+### Wildcards with _super_
 
-The second wildcard types uses the `super` keyword which establishes a __lower__ bound of the type. This type is contravariant with any collection of Fruit types or supertypes:
+The second wildcard types uses the `super` keyword which establishes a _lower_ bound of the type. This type is contravariant with any collection of Fruit types or supertypes:
 
 ```java
 Collection<? super Fruit> fruit1 = new ArrayList<Fruit>();//compiles
@@ -100,8 +100,8 @@ public void makeSmoothie(List<? extends Fruit> fruit) {
 
 The compiler doesn't know if the `fruit` parameter references a Collection of Apples, Oranges, or Fruit (or a maybe a combination of all three?). As a result:
 
-- It's safe to read elements from the collection __as__ type Fruit (cause an Apple is a Fruit, an Orange is a Fruit, etc)
-- It isn't safe to write __anything__ to the collection because the compiler cannot know the underlying collection type at runtime. The collection object could be an ArrayList<Apple> or a LinkedList<Orange>, etc. As you can see, we avoid the problem that exists with arrays.
+- It's safe to read elements from the collection _as_ type Fruit (cause an Apple is a Fruit, an Orange is a Fruit, etc)
+- It isn't safe to write _anything_ to the collection because the compiler cannot know the underlying collection type at runtime. The collection object could be an ArrayList<Apple> or a LinkedList<Orange>, etc. As you can see, we avoid the problem that exists with arrays.
 
 Likewise, the compiler will not allow you to get an element from a Collection defined with the wildcard `? super Type`.  Remember the problem with Collections before Generics:
 
@@ -112,7 +112,7 @@ list.add(1);
 String s = (String) list.get(1);//ClassCastException
 ```
 
-The Java compiler prevents this problem with collection references declared with the `super` wildcard type. The compiler will allow you __put__ elements in, but not __get__ elements out.
+The Java compiler prevents this problem with collection references declared with the `super` wildcard type. The compiler will allow you _put_ elements in, but not _get_ elements out.
 
 ```java
 List<Plant> plants = new  ArrayList<Plant>();
@@ -135,13 +135,13 @@ OK, you are allowed get one type out of a Collection using the super wildcard:
 Object obj = fruit.get(0);
 ```
 
-The compiler will allow this because it can be sure that __every__ reference type is an Object. Just don't forget, the reference could also be null (but that's nothing new).
+The compiler will allow this because it can be sure that _every_ reference type is an Object. Just don't forget, the reference could also be null (but that's nothing new).
 
-All of the above can be summed up via the __Get and Put Principle__:
+All of the above can be summed up via the _Get and Put Principle_:
 
 >Use an extends wildcard when you only get values out of a structure, user a super wildcard when you only put values into a structure, 
->and don't use a wildcard when you both get and put.    [__(Naftalin & Wadler, pg 19)__][1] 
+>and don't use a wildcard when you both get and put.    [_(Naftalin & Wadler, pg 19)_][1] 
 
-Even if nothing else in this post makes sense to you, remember the __Get and Put Principle__! It is __inviolable__.... even if it doesn't seem... you know... intuitive.
+Even if nothing else in this post makes sense to you, remember the _Get and Put Principle_! It is _inviolable_.... even if it doesn't seem... you know... intuitive.
 
 [1]: http://oreilly.com/catalog/9780596527754
