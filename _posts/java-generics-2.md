@@ -85,7 +85,7 @@ public void makeSmoothie(Fruit[] fruit) {
 }
 ```
 
-It is safe to get a Fruit reference from the fruit array, but it isn't safe to put an instance of a Fruit into the array (because it is actually an array of Apples). The people designing the Java language (and Generics) did not permit this same mistake with typed collections. So, for a collection reference defined with an `? extends Fruit` wildcard type, the compiler prevents you from adding an element:
+It is safe to get a Fruit reference from the fruit array, but it isn't safe to put an instance of a Fruit into the array (because it is actually an array of Apples). The people designing the Java language (and Generics) did not permit this same mistake with typed collections. For a collection reference defined with an `extends` wildcard type, the compiler prevents you from adding an element:
 
 ```java
 List<Apple> apples = new ArrayList<Apple>();
@@ -98,22 +98,42 @@ public void makeSmoothie(List<? extends Fruit> fruit) {
 }
 ```
 
-The compiler cannot guarantee what will be passed as a parameter at __runtime__, so it prevents the call to `fruit.add()` inside the `makeSmoothie` method. It is important to point out that there is nothing special about the Collection class; you will see the same compile time checks with your own generic classes if using the `extends` wildcard:
+The compiler doesn't know if the `fruit` parameter references a Collection of Apples, Oranges, or Fruit (or a maybe a combination of all three?). As a result:
+
+- It's safe to read elements from the collection __as__ type Fruit (cause an Apple is a Fruit, an Orange is a Fruit, etc)
+- It isn't safe to write __anything__ to the collection because the compiler cannot know the underlying collection type at runtime. The collection object could be an ArrayList<Apple> or a LinkedList<Orange>, etc. As you can see, we avoid the problem that exists with arrays.
+
+Likewise, the compiler will not allow you to get an element from a Collection defined with the wildcard `? super Type`.  Remember the problem with Collections before Generics:
 
 ```java
-public class MyContainer<E> {
-        
-    public void add(E el){};
-        
-    public E get(int index) {
-        return null;
-    }
-}
-
-private void doSomething(MyContainer<? extends Object> objs){
-        Object obj1 = objs.get(0);
-        objs.add(new String("abc"));//won't compile
-}
+List list = new ArrayList();
+list.add("one");
+list.add(1);
+String s = (String) list.get(1);//ClassCastException
 ```
 
+The Java compiler prevents this problem with collection references declared with the `super` wildcard type. The compiler will allow you __put__ elements in, but not __get__ elements out.
+
+```java
+List<Plant> plants = new  ArrayList<Plant>();
+plants.add(new Plant());//a Plant is a Plant
+plants.add(new Fruit());//a Fruit is a Plant
+plants.add(new Apple());//an Apple is a plant
+
+List<? super Fruit> fruit = plants;//contravariant types
+fruit.add(new Fruit());//still ok 
+fruit.add(new Apple());//still ok
+
+//Not permitted by the compiler, and good thing 
+//because it is not a Fruit! It's a Plant!!
+Fruit fruityGoodness = fruit.get(0);//won't compile
+```
+
+OK, you are allowed get one type out of a Collection using the super wildcard:
+  
+```java
+Object obj = fruit.get(0);
+``
+
+The compiler will allow this because it can be sure that __every__ reference type is an Object. Just don't forget, the reference could also be null (but that's nothing new).
 
