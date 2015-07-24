@@ -140,7 +140,7 @@ The compiler will allow this because it can be sure that __every__ reference typ
 All of the above can be summed up via the __Get and Put Principle__:
 
 >Use an extends wildcard when you only get values out of a structure, user a super wildcard when you only put values into a structure, 
->and don't use a wildcard when you both get and put.[(Naftalin & Wadler, pg 19)][1] 
+>and don't use a wildcard when you both get and put.    [__(Naftalin & Wadler, pg 19)__][1] 
 
 Even if nothing else in this post makes sense to you, remember the __Get and Put Principle__! It is __inviolable__.... even if it doesn't seem... you know... intuitive.
 
