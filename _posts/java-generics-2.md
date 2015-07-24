@@ -45,7 +45,7 @@ By changing the col parameter from the type `Collection<Object>` to the type
 
 ### Wildcards with _extends_
 
-In the example above, the `?` wildcard character is actually a shorthand for `? extends Object`. Object is the 'upper bound' of the type.  You can declare your own wildcard type parameters too. For example, the wildcard `Collection<? extends Fruit>` declares _Fruit_ as the _upper_ bound of the type. This permits covariant assignments:
+In the example above, the `?` wildcard character is actually a shorthand for `? extends Object`. Object is the _upper bound_ of the type.  You can declare your own wildcard type parameters too. For example, the wildcard `Collection<? extends Fruit>` declares _Fruit_ as the upper bound. This permits covariant assignments:
 
 ```java
 Collection<? extends Fruit> fruit1 = new ArrayList<Apple>();//compiles
@@ -57,7 +57,7 @@ Collection<? extends Fruit> fruit4 = new ArrayList<Plant>();//won't compile!!
 
 ### Wildcards with _super_
 
-The second wildcard types uses the `super` keyword which establishes a _lower_ bound of the type. This type is contravariant with any collection of Fruit types or supertypes:
+The second wildcard types uses the `super` keyword which establishes a _lower bound_ of the type. This type is contravariant with any collection of Fruit types or supertypes:
 
 ```java
 Collection<? super Fruit> fruit1 = new ArrayList<Fruit>();//compiles
