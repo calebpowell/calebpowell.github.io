@@ -133,7 +133,7 @@ OK, you are allowed get one type out of a Collection using the super wildcard:
   
 ```java
 Object obj = fruit.get(0);
-``
+```
 
 The compiler will allow this because it can be sure that __every__ reference type is an Object. Just don't forget, the reference could also be null (but that's nothing new).
 
