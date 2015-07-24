@@ -9,7 +9,7 @@ This is part 2 in my post on Making sense of Java Generics. Anyone programming i
 * [Gilad Bracha, Lesson: Generics](http://docs.oracle.com/javase/tutorial/extra/generics/index.html "Lesson: Generics")
 * [Covariance and Contravariance (Wikipedia)](https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science) "Covariance and Contravariance")
 
-We finished up part #1 with a discussion around the invariance of generic types, and gave an example of a utility method that cannot be invoked with any of our sample types (except for Objects):
+We finished up [Part #1](../java-generics-1/) with a discussion around the invariance of generic types, and gave an example of a utility method that cannot be invoked with any of our sample types (except for Objects):
 
 ```java
 public static void printElements(Collection<Object> col) {
@@ -140,6 +140,8 @@ The compiler will allow this because it can be sure that __every__ reference typ
 All of the above can be summed up via the __Get and Put Principle__:
 
 >Use an extends wildcard when you only get values out of a structure, user a super wildcard when you only put values into a structure, 
->and don't use a wildcard when you both get and put. (Naftalin & Wadler, [Java Generics and Collections](http://oreilly.com/catalog/9780596527754), pg 19).
+>and don't use a wildcard when you both get and put.[(Naftalin & Wadler, pg 19)][1] 
 
 Even if nothing else in this post makes sense to you, remember the __Get and Put Principle__! It is __inviolable__.... even if it doesn't seem... you know... intuitive.
+
+[1]: http://oreilly.com/catalog/9780596527754
