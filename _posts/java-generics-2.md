@@ -130,7 +130,7 @@ Fruit fruityGoodness = fruit.get(0);//won't compile
 ```
 
 OK, you are allowed get one type out of a Collection using the super wildcard:
-  
+
 ```java
 Object obj = fruit.get(0);
 ```
@@ -143,5 +143,70 @@ All of the above can be summed up via the _Get and Put Principle_:
 >and don't use a wildcard when you both get and put.    [_(Naftalin & Wadler, pg 19)_][1] 
 
 Even if nothing else in this post makes sense to you, remember the _Get and Put Principle_! It is _inviolable_.... even if it doesn't seem... you know... intuitive.
+
+### Wildcard Usage
+
+Acceptable usage of the wildcard type includes:
+
+- Variable declaration
+
+```java
+List<? extends Plant> plants = new ArrayList<>();
+```
+
+- Method Parameters
+
+```java
+public void doSomething(List<? super Fruit> fruit) {
+
+}
+```
+
+- _Nested_ new instance declarations
+
+```java
+new ArrayList<List<? extends Fruit>>();
+```
+
+- _Nested_ class declarations
+
+```java
+public class MyList extends ArrayList<List<?>> {
+}
+```
+
+- _Nested_ generic method invocations
+
+```java
+public  class ListFactory {
+    public static <T> List<T> createList() {
+        return new ArrayList<T>();
+    }
+}
+
+List<?> list = ListFactory.<?>createList();//won't compile
+List<?> list = ListFactory.<List<?>>createList();//compiles
+```
+
+### Wilcard Restrictions
+
+- Non-nested instance creation
+
+```java
+new ArrayList<? extends Fruit>();//won't compile
+```
+
+- Non-nested Class Declarations
+
+```java
+public class MyList extends ArrayList<?> {
+}//won't compile
+```
+
+- Non-nested Generic method invocations
+
+```java
+List<?> list = ListFactory.<?>createList();//won't compile
+```
 
 [1]: http://oreilly.com/catalog/9780596527754
