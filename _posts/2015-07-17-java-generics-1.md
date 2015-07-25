@@ -123,16 +123,16 @@ Generics allow us to abstract over reference types and enhance type-safety. They
 Before going any further, let's consider a simple class hierarchy that we can use to illustrate our types:
 
 ```java
-public class Plant{};
-public class Fruit extends Plant{};
-public class Apple extends Fruit{};
-public class Orange extends Fruit{};
+public class Animal{};
+public class Bird extends Animal{};
+public class Duck extends Bird{};
+public class Goose extends Bird{};
 ```
 
 As mentioned above, reference types are covariant so you can substitute a __subtype__ where a __supertype__ is expected:
 
 ```java
-Fruit fruit = new Apple();
+Bird bird = new Duck();
 ```
 
 Raw Collections (Collections whose component type isn't specified) are also covariant:
@@ -144,39 +144,39 @@ Collection col = new ArrayList();
 However, Collections specified with different type parameters are invariant! So the following code will not compile:
 
 ```java
-Collection<Fruit> col = new ArrayList<Apple>();//won't compile!
+Collection<Bird> col = new ArrayList<Duck>();//won't compile!
 ```
 
 This code can only be made to compile by removing the invariance on the type paramaters on either the left or right side:
 
 ```java
-Collection<Apple> col = new ArrayList<Apple>();//compiles!
+Collection<Duck> col = new ArrayList<Duck>();//compiles!
 ```
 
 In other words:
 
-An Apple is an Apple:
+A Duck is a Duck:
 
 ```java
-Apple apple = new Apple();
+Duck duck = new Duck();
 ```
 
-An Apple is a Fruit:
+A Duck is a Bird:
 
 ```java
-Fruit fruit = new Apple();
+Bird bird = new Duck();
 ```
 
-A List of Apple is a Collection of Apple:
+A List of Duck is a Collection of Duck:
 
 ```java
-Collection<Apple> col = new ArrayList<Apple>();
+Collection<Duck> col = new ArrayList<Duck>();
 ```
 
-But, a List of Apple is not a List of Fruit! 
+But, a List of Duck is not a List of Bird! 
 
 ```java
-ArrayLit<Fruit> col = new ArrayList<Apple>();//won't compile
+ArrayList<Bird> col = new ArrayList<Duck>();//won't compile
 ```
 
 The invariance of generic types can often feel counter-intuitive. The fact that Generic types are invariant means that some types of assignment are impossible. Consider the following utility method to print the components of a collection:
@@ -188,8 +188,8 @@ public static void printElements(Collection<Object> col) {
     }
 }
 
-Collection<Apple> apples = new ArrayList<Apple>();
-printElements(apples);//won't compile!!
+Collection<Duck> ducks = new ArrayList<Duck>();
+printElements(ducks);//won't compile!!
 ```
 
 In the next post, we will take a look at how wild cards can help provide some covariant and contravariant assignments when using generic types.
