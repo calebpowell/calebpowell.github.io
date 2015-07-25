@@ -80,7 +80,7 @@ makeTurducken(ducks);
 public void makeTurducken(Bird[] birds) {
     Bird aBird = birds[0];//type-safe
     ....
-    birds[0] = new Goose();//runtime-time error  
+    birds[1] = new Goose();//runtime-time error  
     blend(birds);
 }
 ```
