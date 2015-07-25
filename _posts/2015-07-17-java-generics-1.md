@@ -192,4 +192,4 @@ Collection<Duck> ducks = new ArrayList<Duck>();
 printElements(ducks);//won't compile!!
 ```
 
-In the next post, we will take a look at how wild cards can help provide some covariant and contravariant assignments when using generic types.
+In the [next post](../java-generics-2/), we will take a look at how wild cards can help provide some covariant and contravariant assignments when using generic types.

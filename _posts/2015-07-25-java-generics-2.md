@@ -9,7 +9,7 @@ This is part 2 in my post on Making sense of Java Generics. Anyone programming i
 * [Gilad Bracha, Lesson: Generics](http://docs.oracle.com/javase/tutorial/extra/generics/index.html "Lesson: Generics")
 * [Covariance and Contravariance (Wikipedia)](https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science) "Covariance and Contravariance")
 
-We finished up [Part #1](../java-generics-1/) with a discussion around the invariance of generic types, and gave an example of a utility method that cannot be invoked with any of our sample types (except for Objects):
+We finished up [Part 1](../java-generics-1/) with a discussion around the invariance of generic types, and gave an example of a utility method that cannot be invoked with any of our sample types (except for Objects):
 
 ```java
 public static void printElements(Collection<Object> col) {
