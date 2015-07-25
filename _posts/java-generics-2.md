@@ -123,11 +123,11 @@ animals.add(new Bird());//a Bird is an Animal
 animals.add(new Duck());//a Duck is an animal
 
 List<? super Bird> birds = animals;//contravariant types
-birds.add(new Bird());//still ok because a Bird is an animal
-birds.add(new Duck());//still ok because a Duck is an animal
+birds.add(new Bird());//still OK because a Bird is a Bird (and a Bird is an Animal)
+birds.add(new Duck());//still OK because a Duck is a Bird (and a Bird is an Animal)
 
 //Not permitted by the compiler, and good thing 
-//because it is not a Bird! It's an Animal!!
+//because the first element of this list is not a Bird! It's an Animal!!
 Bird birdy = birds.get(0);//won't compile
 ```
 
