@@ -1,0 +1,89 @@
+---
+layout: post
+title: Datalog in 5 Minutes
+---
+
+I originally wrote this post for a Master class I took on software analysis (e.g. liveness, reaching definition) and testing. 
+ 
+### Declarative
+ 
+Datalog is declarative, not imperative. You are not writing code that tells the computer how to do something (e.g. iterate over this data structure and send this integer to the standard output stream). Rather, you declaring to the computer what you want (e.g. give me all of the object allocation sites that don't have any static references pointing to them). This is a lot like SQL programming (a language traditionally used on relational databases).  This is partly why it seems so foreign. 
+ 
+### Facts and Rules
+ 
+Datalog has facts and rules:
+ 
+- Facts are data. They always hold to be true. They are referred to as *Extensional Predicate Symbols* or *Extensional Database Predicates*. Here are some facts:
+
+```datalog
+male(Homer, Abe, Bart).
+female(Marge, Lisa).
+parent(Marge, Bart).
+parent(Marge, Lisa).
+parent(Homer, Bart).
+parent(Homer, Lisa).
+parent(Abe, Homer).
+lazy(Homer).
+```
+
+- Rules are the predicates that connect the data to create new meaning (like the way a proof can work off some basic axioms to derive new conclusions). They are referred to as *Intensional Predicate Symbols* or *Intensional Database Predicates*. Here is an intensional predicate (this is the [canonical datalog example](https://en.wikipedia.org/wiki/Datalog)):
+
+```datalog
+ancestor(x,y) :- parent(x,y).
+```
+
+How do you read that rule? Flip it around and turn it into a logical implication:
+
+> IF x is the parent of y THEN x is the ancestor of y
+
+### Recursion
+
+That last predicate was called ancestor and it contained a single rule. Instead of calling parent directly, I can call ancestor and it will tell me something more interesting using the parent facts. But it's not that useful at the moment because it won't tell me that 'Abe' is the ancestor of 'Bart'. I can fix that by adding a recursive rule:
+
+```datalog
+ancestor(x,y) :- parent(x,y).
+ancestor(x,y) :- parent(x,z), ancestor(z,y).
+```
+
+Now, if I ask whether 'Abe' is the ancestor of 'Bart' I will get a positive result.
+ 
+As mentioned, that second rule is using recursion. The z looks pretty shady. Where did it come from? It is like a wildcard with a name, and Datalog is going to use it to try all options to find a match (or something like that... who cares... just tell it what you want and it will look for it). Again, try flipping that rule around to make sense of it:
+ 
+> IF there exists a z such that x is a parent of z AND z is a parent of y THEN x is an ancestor of y
+
+### And, Or?
+ 
+Another thing I've learned is how to express AND (the conjunction) and OR (the disjunction). When you place items in the same rule, you are using an AND to state how the data gets joined. So for example, if I wanted to figure out who the lazy parents are:
+
+```datalog
+lazyParents(x) :- lazy(x), parent(x,_).
+```
+
+Datalog will look for any x such that x is lazy AND x is a parent. This would return only Homer.  However, if I want my rule to return anyone who is lazy OR is a parent OR both then I could do this:
+
+```datalog
+lazyParents(x) :- lazy(x).
+lazyParents(x) :- parent(x,_).
+```
+
+This will return Homer, Marge, and Abe (note that it would return Homer even if he wasn't a parent). 
+
+### Wildcards and Negation
+
+Wildcards are the represented by the '_' symbol, and mean "anything". So in the *lazyParent* example above, I don't care who x is the parent of. I only care that they are the parent of someone. Datalog will return an empty set if x is not the parent of anyone.
+ 
+Speaking of *not*, our version of Datalog also has some support for negation. So, if you wanted to know who the hard working parents are:
+
+```datalog
+industriousParent(x) :- parent(x, _), !lazy(x).
+```
+
+This would return Marge and Abe. You can also express this another way:
+
+```datalog
+industriousParent(x) :- parent(x, _), lazy(y), x!=y.
+```
+
+### Helpful Hints
+ 
+This has been mentioned before, but output the results from your predicates. It will help you see the intermediate results and get a better handle on what is going on (or going wrong). 
