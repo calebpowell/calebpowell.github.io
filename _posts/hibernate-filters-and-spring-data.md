@@ -23,11 +23,11 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
 }
 ```
 
-All of the standard CRUD methods are defined in the JpaRepository, and I have defined an additional custom query to find the first employee that matches the provided first and latname parameters (which Spring Data will implement at runtime).  All well and good. 
+All of the standard CRUD methods are defined in the JpaRepository, and I have defined an additional custom query to find the first employee that matches the provided first and last name parameters (which Spring Data will implement at runtime).  All well and good. 
 
 Now, let's imagine that the business requires us to filter inactive Employees from the application if the current User is not a manager. We could implement this business logic in the Employee Service or Resource layer, but new functionality is being added daily and it isn't inconceivable that another service  will make use of our EmployeeRepository and mistakenly bypass our filtering logic. We could also provide a concrete implementation of our EmployeeRepository and re-implement the various query methods, but that would defeat the purpose of using Spring Data in the first place.
 
-A better approach would be to implement a Hibernate filter on the entity. This will ensure that any filtering occurs beneath our repository on any queries to the employee table:
+A better approach would be to implement a Hibernate filter on the entity. This will ensure that Hibernate applies filtering beneath our repository (via a *where* clause) on any queries to the employee table:
 
 ```java
 package com.example.domain;
@@ -80,7 +80,7 @@ public class Employee implements Serializable {
 
 ```
 
-So, we have defined `employeeFilter` and it will automatically filter employees, permitting users to view employees only if the record's effective end date is null or the current user's role is 'MANAGER' (the manager is permitted to view all employees). All we have to do now is set the *userRole* parameter any time a repository is accessed. This is easily done using `@AspectJ`:
+So, we have defined `employeeFilter` and it will automatically filter employees, permitting users to view employees provided the record's effective end date is null or the current user's role is 'MANAGER' (the manager is permitted to view all employees). All we have to do now is set the *userRole* parameter used by the filter. We want this filter set each time the repository is accessed. This is easily done using `@AspectJ`:
 
 ```java
 package com.example.repository;
@@ -125,7 +125,7 @@ public class RepositoryInterceptor {
 		logger.trace("intercepted repository call");
 		if (entityManager.isJoinedToTransaction()) {
 			Session session = entityManager.unwrap(Session.class);
-			// retreive the user data from a ThreadLocal
+			//retrieve the user data from a ThreadLocal
 			User user = UserContext.getUser();
 			applyEmployeeFilterParams(session, user);
 		}
