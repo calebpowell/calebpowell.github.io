@@ -23,9 +23,9 @@ Now you can run `git incoming` and `git outgoing` to see which commits will be t
 
 Also notice that we are using the `git config` command. The git config is essentially a properties list consulted by git when you run commands. For example, when you commit code to your repository, the git command will look up your user name and email address from the config property list. There are three levels of scope in config:
 
-local: The properties apply to a specific repository and override any global or system properties with the same name.
-global: These properties belong to the logged in user. They are stored in your home directory's .gitconfig file. They override and system properties with the same name.
-system: These properties are system wide and are the defaults for all users (if not overridden by the above the local or global property sets). 
+- local: The properties apply to a specific repository and override any global or system properties with the same name.
+- global: These properties belong to the logged in user. They are stored in your home directory's .gitconfig file. They override and system properties with the same name.
+- system: These properties are system wide and are the defaults for all users (if not overridden by the above the local or global property sets). 
 
 I chose to use the global config for the aforementioned alias. This means that I will have access to the alias on any git repository I use when I login, but my alias won't be available to other user's on the machine.
 
