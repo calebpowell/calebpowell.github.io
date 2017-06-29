@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Git Alias: Incoming and Outgoing Commits
+title: Git Incoming and Outgoing Commits
 ---
  
 I began using distributed version control about 5 years ago, using a tool called Mercurial (aka hg). Mercurial began life at approximately the same time as Git, the development of both tools being the result of licensing changes to the BitKeeper application. From a distance, Git and Mercurial are essentially the same tool and work the same way. However, the exploding popularity of GitHub has really put git out in front. Git is the VHS of DVCS. 
